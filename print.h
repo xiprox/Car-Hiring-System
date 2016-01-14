@@ -5,69 +5,128 @@
 #include <string.h>
 #include "struct.h"
 
-void printUser(struct User *user);
+void printHeaderBasedOnUserType(int);
 
-void printUserAsAdmin(struct User *user);
+void printUserHeader();
 
-void printUserAsDev(struct User *user);
+void printUser(struct User *);
+
+void printUserHeaderAsAdmin();
+
+void printUserAsAdmin(struct User *);
+
+void printUserHeaderAsDev();
+
+void printUserAsDev(struct User *);
 
 /**
- *
+ * Prints a collection of users in table-like fashion.
  */
 void printUsers(struct User *users, int count, int asType) {
-    for (int i = 0; i < count; i++) {
-        switch (asType) {
-            case 0:
-                printUserAsDev(&users[i]);
-                break;
-            case 1:
-                printUserAsAdmin(&users[i]);
-                break;
-            case 3: // Don't break - leave the job to the default case
-            default:
-                printUser(&users[i]);
-        }
-        printf("\n");
-    }
-}
-
-/**
- *
- */
-void printUser(struct User *user) {
-    printf("ID: %d\n", user->id);
-    printf("Username: %s\n", user->username);
-}
-
-/**
- *
- */
-void printUserAsAdmin(struct User *user) {
-    printUser(user);
-    char type[10];
-    switch (user->type) {
+    printHeaderBasedOnUserType(asType);
+    switch (asType) {
         case 0:
-            strcpy(type, "Developer");
+            for (int i = 0; i < count; i++) {
+                printUserAsDev(&users[i]);
+            }
             break;
         case 1:
-            strcpy(type, "Admin");
+            for (int i = 0; i < count; i++) {
+                printUserAsAdmin(&users[i]);
+            }
             break;
-        case 2:
-            strcpy(type, "Customer");
-            break;
+        case 3: // Don't break - leave the job to the default case
         default:
-            strcpy(type, "?");
+            for (int i = 0; i < count; i++) {
+                printUser(&users[i]);
+            }
     }
-    printf("Type: %s\n", type);
-}
-
-void printUserAsDev(struct User *user) {
-    printUserAsAdmin(user);
-    printf("Password: %s", user->password);
+    printf("\n");
 }
 
 /**
+ * Prints a user table header based on a given type (dev, admin, or customer).
+ */
+void printHeaderBasedOnUserType(int type) {
+    switch (type) {
+        case 0:
+            printUserHeaderAsDev();
+            break;
+        case 1:
+            printUserHeaderAsAdmin();
+            break;
+        case 3: // Don't break - leave the job to the default case
+        default:
+            printUserHeader();
+    }
+}
+
+/**
+ * Prints the user table header.
  *
+ * This function will only print the ID and Username columns.
+ */
+void printUserHeader() {
+    printf("ID\ttUsername\n");
+}
+
+/**
+ * Prints a user as a table line.
+ */
+void printUser(struct User *user) {
+    printf("%d\t%s\n", user->id, user->username);
+}
+
+/**
+ * Prints the user table header.
+ *
+ * This function will print all information except the Password.
+ */
+void printUserHeaderAsAdmin() {
+    printf("ID\t\tUsername\t\tType\n");
+    printf("______________________________\n");
+}
+
+/**
+ * Prints a user as a table line.
+ *
+ * The admin command prints all information except password.
+ */
+void printUserAsAdmin(struct User *user) {
+    printf("%d\t%s\t\t%s\n", user->id, user->username, getTypeString(user));
+}
+
+/**
+ * Prints the user table header. This function will print all information.
+ */
+void printUserHeaderAsDev() {
+    printf("ID\tUsername\t\tPassword\t\tType\n");
+    printf("________________________________________\n");
+}
+
+/**
+ * Prints a user as a table line.
+ *
+ * The dev print command prints all information.
+ */
+void printUserAsDev(struct User *user) {
+    printf("%d\t%s\t\t%s\t\t\t%s\n", user->id, user->username, user->password, getTypeString(user));
+}
+
+/**
+ * Prints a row with any given column params with two tab spaces in between each.
+ *
+ * Unsupported
+ */
+void printRow(int columnCount, ...) {
+    /*
+     * Was going to write a function that prints a row for just anything. Figured there's no way to tell a vararg type
+     * at runtime in C though. Such letdown.
+     */
+}
+
+/**
+ * Prints the obvious message
  */
 void printNoValidChoiceMessage() {
     printf("Please enter a valid choice.");

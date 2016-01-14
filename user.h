@@ -24,7 +24,15 @@ int lastId;
 
 int usersCount;
 
+int reloadLastId();
 struct User readUserFromFile(FILE *);
+
+/**
+ * Prepares the user header. Make sure to call this in your main function before anything else!
+ */
+void initUserH() {
+    reloadLastId();
+}
 
 /**
  * ...
@@ -134,6 +142,24 @@ struct User readUserFromFile(FILE *file) {
     struct User user;
     fscanf(file, USER_FORMAT, &user.id, user.username, user.password, &user.type);
     return user;
+}
+
+char * getTypeString(struct User *user) {
+    char * type = malloc(10 * sizeof(char));
+    switch (user->type) {
+        case 0:
+            strcpy(type, "Developer");
+            break;
+        case 1:
+            strcpy(type, "Admin");
+            break;
+        case 2:
+            strcpy(type, "Customer");
+            break;
+        default:
+            strcpy(type, "?");
+    }
+    return type;
 }
 
 #endif //CAR_HIRING_SYSTEM_USER_H

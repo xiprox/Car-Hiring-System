@@ -9,6 +9,9 @@ void logInAsDev();
 int main() {
     printf("Welcome. Banners are still in print...\n\n");
 
+    /* Initialization of some stuff */
+    initUserH();
+
     int choice = -1;
 
     while (choice == -1) {
