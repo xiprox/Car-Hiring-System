@@ -25,6 +25,7 @@ int lastId;
 int usersCount;
 
 int reloadLastId();
+
 struct User readUserFromFile(FILE *);
 
 /**
@@ -94,24 +95,23 @@ void removeUser(int id) {
         }
     }
 
-    /* Close the first file and then open it as 'w' in order to erase all of its contents */
+    /* Delete the original file and rename the copy as original. Then proceed to delete the now useless copy */
     fclose(file);
-    FILE *newFile = fopen(USERS_STORE, "w");
-
-    /* Loop through the temporary file copying over all users */
-    while (!feof(tempFile)) {
-        struct User user = readUserFromFile(tempFile);
-        fprintf(newFile, USER_FORMAT, user.id, user.username, user.password, user.type);
+    int deleted = !remove(USERS_STORE); // WHY THE HELL 0 WHEN SUCCESSFUL AND 1 WHEN FAIL?! #IHATEC
+    if (deleted) {
+        rename(USERS_STORE_COPY, USERS_STORE);
+        remove(USERS_STORE_COPY);
+    } else {
+        printf("\tCouldn't remove user with id %d", id);
     }
 
-    fclose(newFile);
     fclose(tempFile);
 }
 
 /**
  *
  */
-struct User * getAllUsers() {
+struct User *getAllUsers() {
     FILE *file = fopen(USERS_STORE, "r");
 
     /* Return empty array if file doesn't even exist */
@@ -144,8 +144,8 @@ struct User readUserFromFile(FILE *file) {
     return user;
 }
 
-char * getTypeString(struct User *user) {
-    char * type = malloc(10 * sizeof(char));
+char *getTypeString(struct User *user) {
+    char *type = malloc(10 * sizeof(char));
     switch (user->type) {
         case 0:
             strcpy(type, "Developer");
