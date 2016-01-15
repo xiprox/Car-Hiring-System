@@ -20,7 +20,7 @@ char ID_STORE[] = "ID_STORE_USERS.txt";
 char USERS_STORE[] = "USERS_STORE.txt";
 char USERS_STORE_COPY[] = "USERS_STORE_COPY.txt";
 
-int lastId;
+int lastId = 0;
 
 int usersCount;
 
@@ -51,6 +51,12 @@ void updateLastId(int id) {
  */
 int reloadLastId() {
     FILE *file = fopen(ID_STORE, "r");
+
+    if (file == NULL) {
+        fopen(ID_STORE, "w");
+        return lastId;
+    }
+
     fscanf(file, ID_FORMAT, &lastId);
     fclose(file);
     return lastId;
