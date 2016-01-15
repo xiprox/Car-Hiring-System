@@ -149,7 +149,7 @@ struct User *getAllUsers() {
 
 struct User readUserFromFile(FILE *file) {
     struct User user;
-    fscanf(file, USER_FORMAT, &user.id, user.username, user.password, &user.type);
+    fscanf(file, USER_FORMAT, &user.id, user.username, user.password, user.name, user.surname, &user.type);
     return user;
 }
 

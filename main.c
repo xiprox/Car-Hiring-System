@@ -4,7 +4,13 @@
 #include "print.h"
 #include "auth.h"
 
-void logInAsDev();
+void devMode();
+
+void adminMode();
+
+void customerMode();
+
+int promptLogin(int type);
 
 int main() {
     printf("Welcome. Banners are still in print...\n\n");
@@ -27,8 +33,13 @@ int main() {
                 printf("bai o/\n\n");
                 break;
             case 1:
-                logInAsDev();
+                devMode();
                 break;
+            case 2:
+                adminMode();
+                break;
+            case 3:
+                customerMode();
             default:
                 printNoValidChoiceMessage();
         }
@@ -37,33 +48,11 @@ int main() {
     return 0;
 }
 
-void logInAsDev() {
-    struct User user;
-    user.type = TYPE_DEV;
-
-    int authenticated = 0;
-    int exit = 0;
-    while (!authenticated && !exit) {
-        printf("\nUsername: ");
-        scanf("%s", user.username);
-
-        /* Handle exit option */
-        if (!strcmp(user.username, "x")) {
-            exit = 1;
-            continue;
-        }
-
-        printf("Password: ");
-        scanf("%s", user.password);
-
-        authenticated = authenticate(&user, TYPE_DEV);
-
-        if (!authenticated) {
-            printf("\nWrong username or password. Please try again. Input x to exit.\n");
-        }
+void devMode() {
+    if (promptLogin(TYPE_DEV) <= 0) {
+        main();
+        return;
     }
-
-    if (!authenticated) return;
 
     int choice = -1;
     while (choice != 0) {
@@ -113,7 +102,8 @@ void logInAsDev() {
                 printf("\tAdmin? (1 or 0. 0 by default.): ");
                 scanf("%d", &isAdmin);
 
-                addUser(newUser.username, newUser.password, newUser.name, newUser.surname, isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER);
+                addUser(newUser.username, newUser.password, newUser.name, newUser.surname,
+                        isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER);
             }
                 break;
             case 3:
@@ -128,4 +118,127 @@ void logInAsDev() {
                 printNoValidChoiceMessage();
         }
     }
+}
+
+void adminMode() {
+    if (promptLogin(TYPE_ADMIN) <= 0) {
+        main();
+        return;
+    }
+
+    int choice = -1;
+    while (choice != 0) {
+        printf(" ----------------------------\n");
+        printf("|          ADMIN MENU        |\n");
+        printf(" ----------------------------\n");
+        printf("\n");
+        printf("\t0: <—\n");
+        printf("\t1: List all cars in database\n");
+        printf("\t2: Add a car\n");
+        printf("\t3: Remove a car\n");
+        printf("\t4: Search cars by attributes (model, price, etc.)\n");
+        printf("\t5: Update car info\n");
+        printf("Please make a choice: ");
+        scanf("%d", &choice);
+        printf("\n");
+
+        switch (choice) {
+            case 0:
+                main();
+                break;
+            case 1:
+                // TODO
+                break;
+            case 2:
+                // TODO
+                break;
+            case 3:
+                // TODO
+                break;
+            case 4:
+                // TODO
+                break;
+            case 5:
+                // TODO
+                break;
+            default:
+                printNoValidChoiceMessage();
+        }
+    }
+}
+
+void customerMode() {
+    if (promptLogin(TYPE_CUSTOMER) <= 0) {
+        main();
+        return;
+    }
+
+    int choice = -1;
+    while (choice != 0) {
+        printf(" ----------------------------\n");
+        printf("|       CUSTOMER MENU        |\n");
+        printf(" ----------------------------\n");
+        printf("\n");
+        printf("\t0: <—\n");
+        printf("\t1: Hire a car\n");
+        printf("\t2: Return a car\n");
+        printf("\t3: List all hired cars\n");
+        printf("\t4: List all available cars\n");
+        printf("\t5: Search cars by attributes (model, price, etc.)\n");
+        printf("\t6: My hired cars\n");
+        printf("Please make a choice: ");
+        scanf("%d", &choice);
+        printf("\n");
+
+        switch (choice) {
+            case 0:
+                main();
+                break;
+            case 1:
+                // TODO
+                break;
+            case 2:
+                // TODO
+                break;
+            case 3:
+                // TODO
+                break;
+            case 4:
+                // TODO
+                break;
+            case 5:
+                // TODO
+                break;
+            default:
+                printNoValidChoiceMessage();
+        }
+    }
+}
+
+int promptLogin(int type) {
+    struct User user;
+    user.type = type;
+
+    int authenticated = 0;
+    while (authenticated == 0) {
+        printf("\nUsername: ");
+        scanf("%s", user.username);
+
+        /* Handle exit option */
+        if (!strcmp(user.username, "x")) {
+            authenticated = -1;
+            continue;
+        }
+
+        printf("Password: ");
+        scanf("%s", user.password);
+
+        authenticated = authenticate(&user, type);
+
+        if (!authenticated) {
+            printWrongUsernameOrPassword();
+        }
+    }
+
+    return authenticated;
 }

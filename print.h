@@ -132,4 +132,8 @@ void printNoValidChoiceMessage() {
     printf("Please enter a valid choice.");
 }
 
+void printWrongUsernameOrPassword() {
+    printf("Wrong username or password. Please try again. Input x to exit.\n");
+}
+
 #endif //CAR_HIRING_SYSTEM_PRINT_H
