@@ -14,7 +14,7 @@ int TYPE_ADMIN = 1;
 int TYPE_CUSTOMER = 2;
 
 char ID_FORMAT[] = "%d";
-char USER_FORMAT[] = "%d %s %s %d\n";
+char USER_FORMAT[] = "%d %s %s %s %s %d\n";
 
 char ID_STORE[] = "ID_STORE_USERS.txt";
 char USERS_STORE[] = "USERS_STORE.txt";
@@ -27,6 +27,7 @@ int usersCount;
 int reloadLastId();
 
 struct User readUserFromFile(FILE *);
+void writeUserToFile(FILE *file, struct User *user);
 
 /**
  * Prepares the user header. Make sure to call this in your main function before anything else!
@@ -58,10 +59,10 @@ int reloadLastId() {
 /**
  * ...
  */
-struct User addUser(char username[], char password[], int type) {
+struct User addUser(char username[], char password[], char name[], char surname[], int type) {
     FILE *users = fopen(USERS_STORE, "a");
 
-    fprintf(users, USER_FORMAT, ++lastId, username, password, type);
+    fprintf(users, USER_FORMAT, ++lastId, username, password, name, surname, type);
     fclose(users);
 
     /* Make sure to store the now update last id */
@@ -72,6 +73,8 @@ struct User addUser(char username[], char password[], int type) {
     user.id = lastId;
     strcpy(user.username, username);
     strcpy(user.password, password);
+    strcpy(user.name, name);
+    strcpy(user.surname, surname);
     user.type = type;
     return user;
 }
@@ -91,7 +94,7 @@ void removeUser(int id) {
         struct User user = readUserFromFile(file);
 
         if (user.id != id) {
-            fprintf(tempFile, USER_FORMAT, user.id, user.username, user.password, user.type);
+            writeUserToFile(tempFile, &user);
         }
     }
 
@@ -142,6 +145,10 @@ struct User readUserFromFile(FILE *file) {
     struct User user;
     fscanf(file, USER_FORMAT, &user.id, user.username, user.password, &user.type);
     return user;
+}
+
+void writeUserToFile(FILE *file, struct User *user) {
+    fprintf(file, USER_FORMAT, user->id, user->username, user->password, user->name, user->surname, user->type);
 }
 
 char *getTypeString(struct User *user) {

@@ -103,11 +103,17 @@ void logInAsDev() {
                 printf("\tPassword (max 20 characters): ");
                 scanf("%s", newUser.password);
 
+                printf("\tName (max 20 characters): ");
+                scanf("%s", newUser.name);
+
+                printf("\tSurname (max 20 characters): ");
+                scanf("%s", newUser.surname);
+
                 int isAdmin = 0;
                 printf("\tAdmin? (1 or 0. 0 by default.): ");
                 scanf("%d", &isAdmin);
 
-                addUser(newUser.username, newUser.password, isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER);
+                addUser(newUser.username, newUser.password, newUser.name, newUser.surname, isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER);
             }
                 break;
             case 3:

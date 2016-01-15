@@ -67,14 +67,14 @@ void printHeaderBasedOnUserType(int type) {
  * This function will only print the ID and Username columns.
  */
 void printUserHeader() {
-    printf("ID\ttUsername\n");
+    printf("ID\t\ttUsername\t\tName\t\tSurname\n");
 }
 
 /**
  * Prints a user as a table line.
  */
 void printUser(struct User *user) {
-    printf("%d\t%s\n", user->id, user->username);
+    printf("%d\t\t%s\t\t%s\t\t%s\n", user->id, user->username, user->name, user->surname);
 }
 
 /**
@@ -83,7 +83,7 @@ void printUser(struct User *user) {
  * This function will print all information except the Password.
  */
 void printUserHeaderAsAdmin() {
-    printf("ID\t\tUsername\t\tType\n");
+    printf("ID\t\tUsername\t\tName\t\tSurname\t\tType\n");
     printf("______________________________\n");
 }
 
@@ -93,14 +93,14 @@ void printUserHeaderAsAdmin() {
  * The admin command prints all information except password.
  */
 void printUserAsAdmin(struct User *user) {
-    printf("%d\t%s\t\t%s\n", user->id, user->username, getTypeString(user));
+    printf("%d\t%s\t\t%s\t\t%s\t\t%s\n", user->id, user->username, user->name, user->surname, getTypeString(user));
 }
 
 /**
  * Prints the user table header. This function will print all information.
  */
 void printUserHeaderAsDev() {
-    printf("ID\tUsername\t\tPassword\t\tType\n");
+    printf("ID\tUsername\t\tPassword\t\tName\t\tSurname\t\tType\n");
     printf("________________________________________\n");
 }
 
@@ -110,7 +110,7 @@ void printUserHeaderAsDev() {
  * The dev print command prints all information.
  */
 void printUserAsDev(struct User *user) {
-    printf("%d\t%s\t\t%s\t\t\t%s\n", user->id, user->username, user->password, getTypeString(user));
+    printf("%d\t%s\t\t%s\t\t\t%s\t\t%s\t\t%s\n", user->id, user->username, user->password, user->name, user->surname, getTypeString(user));
 }
 
 /**
