@@ -16,7 +16,7 @@ int TYPE_CUSTOMER = 2;
 char ID_FORMAT[] = "%d";
 char USER_FORMAT[] = "%d %s %s %s %s %d\n";
 
-char ID_STORE[] = "ID_STORE_USERS.txt";
+char ID_STORE_USERS[] = "ID_STORE_USERS.txt";
 char USERS_STORE[] = "USERS_STORE.txt";
 char USERS_STORE_COPY[] = "USERS_STORE_COPY.txt";
 
@@ -41,7 +41,7 @@ void initUserH() {
  */
 void updateLastId(int id) {
     lastId = id;
-    FILE *file = fopen(ID_STORE, "w");
+    FILE *file = fopen(ID_STORE_USERS, "w");
     fprintf(file, ID_FORMAT, id);
     fclose(file);
 }
@@ -50,10 +50,10 @@ void updateLastId(int id) {
  * ...
  */
 int reloadLastId() {
-    FILE *file = fopen(ID_STORE, "r");
+    FILE *file = fopen(ID_STORE_USERS, "r");
 
     if (file == NULL) {
-        fopen(ID_STORE, "w");
+        fopen(ID_STORE_USERS, "w");
         return lastId;
     }
 
