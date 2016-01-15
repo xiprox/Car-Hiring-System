@@ -106,7 +106,7 @@ void removeUser(int id) {
 
     /* Delete the original file and rename the copy as original. Then proceed to delete the now useless copy */
     fclose(file);
-    int deleteResult = !remove(USERS_STORE);
+    int deleteResult = remove(USERS_STORE);
     if (deleteResult == 0) {
         rename(USERS_STORE_COPY, USERS_STORE);
         remove(USERS_STORE_COPY);
