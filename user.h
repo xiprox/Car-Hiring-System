@@ -106,8 +106,8 @@ void removeUser(int id) {
 
     /* Delete the original file and rename the copy as original. Then proceed to delete the now useless copy */
     fclose(file);
-    int deleted = !remove(USERS_STORE); // WHY THE HELL 0 WHEN SUCCESSFUL AND 1 WHEN FAIL?! #IHATEC
-    if (deleted) {
+    int deleteResult = !remove(USERS_STORE);
+    if (deleteResult == 0) {
         rename(USERS_STORE_COPY, USERS_STORE);
         remove(USERS_STORE_COPY);
     } else {
