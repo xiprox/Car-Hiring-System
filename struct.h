@@ -1,6 +1,11 @@
 #ifndef CAR_HIRING_SYSTEM_STRUCT_H
 #define CAR_HIRING_SYSTEM_STRUCT_H
 
+struct Hire {
+    int id;
+    int hireDate;
+};
+
 struct User {
     int id;
     char username[20];
@@ -8,7 +13,7 @@ struct User {
     char name[20];
     char surname[20];
     int type; // One of TYPE_DEV, TYPE_ADMIN or TYPE_CUSTOMER (See user.h)
-    int hiredCars[3];
+    struct Hire hiredCars[3];
 };
 
 struct Car {
