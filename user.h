@@ -65,24 +65,14 @@ int reloadLastId() {
 /**
  * ...
  */
-struct User addUser(char username[], char password[], char name[], char surname[], int type) {
+void addUser(struct User *user) {
     FILE *users = fopen(USERS_STORE, "a");
 
-    fprintf(users, USER_FORMAT, ++lastId, username, password, name, surname, type);
+    fprintf(users, USER_FORMAT, ++lastId, user->username, user->password, user->name, user->surname, user->type);
     fclose(users);
 
     /* Make sure to store the now update last id */
     updateLastId(lastId);
-
-    /* Return the added user for convenience reasons */
-    struct User user;
-    user.id = lastId;
-    strcpy(user.username, username);
-    strcpy(user.password, password);
-    strcpy(user.name, name);
-    strcpy(user.surname, surname);
-    user.type = type;
-    return user;
 }
 
 /**

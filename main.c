@@ -101,9 +101,9 @@ void devMode() {
                 int isAdmin = 0;
                 printf("\tAdmin? (1 or 0. 0 by default.): ");
                 scanf("%d", &isAdmin);
+                newUser.type = isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER;
 
-                addUser(newUser.username, newUser.password, newUser.name, newUser.surname,
-                        isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER);
+                addUser(&newUser);
             }
                 break;
             case 3:
