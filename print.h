@@ -19,6 +19,12 @@ void printUserHeaderAsDev();
 
 void printUserAsDev(struct User *);
 
+void printCarsHeader();
+
+void printCar(struct Car *car);
+
+////////// User printing functions
+
 /**
  * Prints a collection of users in table-like fashion.
  */
@@ -110,7 +116,8 @@ void printUserHeaderAsDev() {
  * The dev print command prints all information.
  */
 void printUserAsDev(struct User *user) {
-    printf("%d\t%s\t\t%s\t\t\t%s\t\t%s\t\t%s\n", user->id, user->username, user->password, user->name, user->surname, getTypeString(user));
+    printf("%d\t%s\t\t%s\t\t\t%s\t\t%s\t\t%s\n", user->id, user->username, user->password, user->name, user->surname,
+           getTypeString(user));
 }
 
 /**
@@ -134,6 +141,37 @@ void printNoValidChoiceMessage() {
 
 void printWrongUsernameOrPassword() {
     printf("Wrong username or password. Please try again. Input x to exit.\n");
+}
+
+
+
+////////// Car printing functions
+
+/**
+ * Prints a collection of cars in table-like fashion.
+ */
+void printCars(struct Car *cars, int count) {
+    printCarsHeader();
+    for (int i = 0; i < count; i++) {
+        printCar(&cars[i]);
+    }
+    printf("\n");
+}
+
+/**
+ * Prints the car table header
+ */
+void printCarsHeader() {
+    printf("ID\tManufacturer\t\tModel\t\tPrice\t\tKilometrage\t\tStatus\n");
+    printf("--------------------------------------------------------------\n");
+}
+
+/**
+ * Prints a car as a table line
+ */
+void printCar(struct Car *car) {
+    printf("%d\t%s\t\t%s\t\t%d\t\t%d\t\t%s\n", car->id, car->manufacturer, car->model, car->price, car->kilometrage,
+           car->hired ? "Hired" : "Available");
 }
 
 #endif //CAR_HIRING_SYSTEM_PRINT_H
