@@ -59,9 +59,18 @@ void writeCarToFile(FILE *file, struct Car *car) {
 /**
  *
  */
-struct Car addCar(/*...*/) {
-    // TODO: Implementation
-}
+struct Car addCar(struct Car * car ) {
+    
+   
+    
+        FILE *file = fopen(CARS_STORE, "a");
+        
+        fprintf(file, CAR_FORMAT, ++lastId, car->price, car->model, car->manufacturer, car->kilometrage, car->hired);
+        fclose(file);
+        
+    /* Make sure to store the now update last id  */
+        updateLastId(lastId);
+    }
 
 /**
  *
