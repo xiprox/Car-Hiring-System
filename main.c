@@ -4,6 +4,7 @@
 #include "print.h"
 #include "auth.h"
 #include "car.h"
+#include "hire.h"
 
 void devMode();
 
@@ -19,6 +20,7 @@ int main() {
     /* Initialization of some stuff */
     initUserH();
     initCarH();
+    initHiresH();
 
     int choice = -1;
 
@@ -105,7 +107,7 @@ void devMode() {
                 scanf("%d", &isAdmin);
                 newUser.type = isAdmin ? TYPE_ADMIN : TYPE_CUSTOMER;
 
-                addUser(&newUser);
+                addUser(&newUser, 1);
             }
                 break;
             case 3:
@@ -196,7 +198,8 @@ void adminMode() {
                 printf("Hired (1 or 0): ");
                 scanf("%d", &hired);
 
-                printCars(filterCars(getAllCars(), carsCount, manufacturer, model, price, kilometrage, hired), filteredResultsCount);
+                printCars(filterCars(getAllCars(), carsCount, manufacturer, model, price, kilometrage, hired),
+                          filteredResultsCount);
                 break;
             case 5:
                 printf("Updating a car: \n");
@@ -246,10 +249,19 @@ void customerMode() {
                 main();
                 break;
             case 1:
-                // TODO
+                printf("Hiring a car: \n");
+                printf("\tWhich car would you like to hire (ID): ");
+                int carId;
+                scanf("%d", &carId);
+                struct Car car = findCarById(carId);
+                hireCar(&car, currentUser.id);
                 break;
             case 2:
-                // TODO
+                printf("Returning a car: \n");
+                printf("\tWhich car would you like to return (Hire ID): ");
+                int hireId;
+                scanf("%d", &hireId);
+                returnCar(hireId);
                 break;
             case 3:
                 printCars(filterCars(getAllCars(), carsCount, "x", "x", -1, -1, 1), filteredResultsCount);
@@ -260,6 +272,15 @@ void customerMode() {
             case 5:
                 // TODO
                 break;
+            case 6: {
+                struct Hire *hires = getHiresByUser(currentUser.id, 0);
+                if (hiresByGivenUserCount != 0) {
+                    printHires(hires, hiresByGivenUserCount);
+                } else {
+                    printf("No hired cars.\n");
+                }
+            }
+                break;
             default:
                 printNoValidChoiceMessage();
         }
@@ -267,27 +288,32 @@ void customerMode() {
 }
 
 int promptLogin(int type) {
-    currentUser.type = type;
+    struct User user;
+    user.type = type;
 
     int authenticated = 0;
     while (authenticated == 0) {
         printf("\nUsername: ");
-        scanf("%s", currentUser.username);
+        scanf("%s", user.username);
 
         /* Handle exit option */
-        if (!strcmp(currentUser.username, "x")) {
+        if (!strcmp(user.username, "x")) {
             authenticated = -1;
             continue;
         }
 
         printf("Password: ");
-        scanf("%s", currentUser.password);
+        scanf("%s", user.password);
 
-        authenticated = authenticate(&currentUser, type);
+        authenticated = authenticate(&user, type);
 
         if (!authenticated) {
             printWrongUsernameOrPassword();
         }
+    }
+
+    if (authenticated == 1) {
+        currentUser = findUserByUsername(user.username);
     }
 
     return authenticated;

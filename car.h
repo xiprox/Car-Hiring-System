@@ -260,20 +260,6 @@ struct Car * filterCars(struct Car *cars, int count, char manufacturer[], char m
     return results;
 }
 
-/**
- *
- */
-void hireCar(int id, int carId) {
-    // TODO: Implementation
-}
-
-/**
- *
- */
-void returnCar(int id, int carId) {
-    // TODO: Implementation
-}
-
 int validateId(int id) {
     return id >= 0 && id <= lastCarsId;
 }

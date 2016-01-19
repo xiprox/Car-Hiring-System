@@ -3,7 +3,10 @@
 
 struct Hire {
     int id;
-    int hireDate;
+    int carId;
+    int userId;
+    long hireDate;
+    long returnDate;
 };
 
 struct User {
@@ -13,7 +16,6 @@ struct User {
     char name[20];
     char surname[20];
     int type; // One of TYPE_DEV, TYPE_ADMIN or TYPE_CUSTOMER (See user.h)
-    struct Hire hiredCars[3];
 };
 
 struct Car {

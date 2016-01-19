@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "struct.h"
 
 void printHeaderBasedOnUserType(int);
@@ -22,6 +23,10 @@ void printUserAsDev(struct User *);
 void printCarsHeader();
 
 void printCar(struct Car *car);
+
+void printHiresHeader();
+
+void printHire(struct Hire *);
 
 ////////// User printing functions
 
@@ -153,6 +158,49 @@ void printCar(struct Car *car) {
 
 
 
+////////// Hire printing functions
+
+/**
+ * Prints a collection of hires in table-like fashion.
+ */
+void printHires(struct Hire *hires, int count) {
+    printHiresHeader();
+    for (int i = 0; i < count; i++) {
+        printHire(&hires[i]);
+    }
+    printf("\n");
+}
+
+/**
+ * Prints the hire table header
+ */
+void printHiresHeader() {
+    printf("ID\tCar ID\tUser ID\tHire Date\tReturn Date\n");
+    printf("----------------------------------------------------\n");
+}
+
+/**
+ * Prints a hire as a table line
+ */
+void printHire(struct Hire *hire) {
+    /*
+    char hiredBuffer[80];
+    char returnBuffer[80];
+
+    struct tm *hiredTm = localtime(&hire->hireDate);
+    struct tm *returnTm = localtime(&hire->returnDate);
+
+    strftime(hiredBuffer, 80, "%x", hiredTm);
+    strftime(returnBuffer, 80, "%x", returnTm);
+    */
+
+    printf("%d\t%d\t\t%d\t\t%s\t%s\n", hire->id, hire->carId, hire->userId, "?",
+           hire->returnDate != 0 ? "?" : "Not returned");
+
+    // TODO: Fix this...
+}
+
+
 ////////// Misc stuff
 
 /**
@@ -168,6 +216,10 @@ void printWrongUsernameOrPassword() {
 
 void printInvalidId() {
     printf("Please enter a valid id.\n");
+}
+
+void printNoAvailableHireSlots() {
+    printf("You have reached the maximum number of hires you can make. (3)\n");
 }
 
 /**

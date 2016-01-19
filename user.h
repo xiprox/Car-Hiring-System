@@ -65,11 +65,12 @@ int reloadLastUsersId() {
 /**
  * ...
  */
-void addUser(struct User *user) {
-    FILE *users = fopen(USERS_STORE, "a");
+void addUser(struct User *user, int autoincrementId) {
+    FILE *file = fopen(USERS_STORE, "a");
 
-    fprintf(users, USER_FORMAT, ++lastUsersId, user->username, user->password, user->name, user->surname, user->type);
-    fclose(users);
+    user->id = autoincrementId ? ++lastUsersId : user->id;
+    writeUserToFile(file, user);
+    fclose(file);
 
     /* Make sure to store the now update last id */
     updateLastUsersId(lastUsersId);
@@ -108,6 +109,17 @@ void removeUser(int id) {
 }
 
 /**
+ * Replaces a user in the database with a given user struct only retaining the ID. Basically, everything other tha
+ * the ID is replaced with the values of the user parameter.
+ */
+struct User * updateUser(int id, struct User *user) {
+    removeUser(id);
+    user->id = id;
+    addUser(user, 0);
+    return user;
+}
+
+/**
  *
  */
 struct User *getAllUsers() {
@@ -135,6 +147,30 @@ struct User *getAllUsers() {
     }
 
     return users;
+}
+
+/**
+ * Finds and returns a user by its ID. Newly created one otherwise.
+ */
+struct User findUserById(int id) {
+    struct User *users = getAllUsers();
+    for (int i = 0; i < usersCount; i++) {
+        if (users[i].id == id) return users[i];
+    }
+    struct User empty;
+    return empty;
+}
+
+/**
+ * Finds and returns a user by its username. Newly created one otherwise.
+ */
+struct User findUserByUsername(char username[]) {
+    struct User *users = getAllUsers();
+    for (int i = 0; i < usersCount; i++) {
+        if (strcmp(users[i].username, username) == 0) return users[i];
+    }
+    struct User empty;
+    return empty;
 }
 
 struct User readUserFromFile(FILE *file) {
