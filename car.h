@@ -14,6 +14,7 @@ char CARS_STORE_COPY[] = "CARS_STORE_COPY.txt";
 int lastCarsId = 0;
 
 int carsCount;
+int filteredResultsCount = 0; // NOTE: This is only accurate right after calling filterCars. Don't use it in any other way!
 
 int reloadLastCarsId();
 
@@ -198,10 +199,51 @@ struct Car *getCarFromUser(struct Car *car) {
 }
 
 /**
+ * Filters and returns a given car array. Pass x for text, and -1 for numeric parameters if you want to omit them.
  *
+ * Also updates filteredCarsCount once executed.
  */
-struct Car *filterCars(struct Car *cars) {
-    // TODO: Implementation
+struct Car * filterCars(struct Car *cars, int count, char manufacturer[], char model[], int price, int kilometrage, int hired) {
+    struct Car *results = malloc(count * sizeof(struct Car));
+
+    filteredResultsCount = 0;
+
+    for (int i = 0; i < count; i++) {
+        int add = 1;
+
+        struct Car currentCar = cars[i];
+
+        /* Check if we are ignoring, then proceed to see if the values are the same. In case they are not, skip this iteration. */
+        if (strcmp(manufacturer, "x") != 0) {
+            if (strcmp(currentCar.manufacturer, manufacturer) != 0) continue;
+        }
+
+        /* Same as above */
+        if (strcmp(model, "x") != 0) {
+            if (strcmp(currentCar.model, model) != 0) continue;
+        }
+
+        /* Same as above with the exception that we don't check for exact values and instead have an error range of +- 50 */
+        if (price != -1) {
+            if (price < currentCar.price - 50 || price > currentCar.price + 50) continue;
+        }
+
+        /* Same as above */
+        if (kilometrage != -1) {
+            if (kilometrage < currentCar.kilometrage - 50 || kilometrage > currentCar.kilometrage + 50) continue;
+        }
+
+        /* Same, without error range here */
+        if (hired != -1) {
+            if (hired != currentCar.hired) continue;
+        }
+
+        if (add) {
+            results[filteredResultsCount++] = currentCar;
+        }
+    }
+
+    return results;
 }
 
 /**
