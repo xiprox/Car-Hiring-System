@@ -161,13 +161,19 @@ void adminMode() {
                 printf("Adding a new car: \n");
                 struct Car car;
                 getCarFromUser(&car);
-                addCar(&car);
+                addCar(&car, 1);
                 break;
             case 3:
                 printf("Removing a car: \n");
                 printf("\tWhich car would you like to remove (ID): ");
                 int id;
                 scanf("%d", &id);
+
+                if (!validateId(id)) {
+                    printInvalidId();
+                    break;
+                }
+
                 removeCar(id);
                 break;
             case 4:
@@ -198,7 +204,12 @@ void adminMode() {
                 int carId;
                 scanf("%d", &carId);
 
-                struct Car updatedCar;
+                if (!validateId(carId)) {
+                    printInvalidId();
+                    break;
+                }
+
+                struct Car updatedCar = findCarById(carId);
                 updateCar(carId, getCarFromUser(&updatedCar));
                 break;
             default:

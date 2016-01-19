@@ -120,29 +120,6 @@ void printUserAsDev(struct User *user) {
            getTypeString(user));
 }
 
-/**
- * Prints a row with any given column params with two tab spaces in between each.
- *
- * Unsupported
- */
-void printRow(int columnCount, ...) {
-    /*
-     * Was going to write a function that prints a row for just anything. Figured there's no way to tell a vararg type
-     * at runtime in C though. Such letdown.
-     */
-}
-
-/**
- * Prints the obvious message
- */
-void printNoValidChoiceMessage() {
-    printf("Please enter a valid choice.");
-}
-
-void printWrongUsernameOrPassword() {
-    printf("Wrong username or password. Please try again. Input x to exit.\n");
-}
-
 
 
 ////////// Car printing functions
@@ -172,6 +149,37 @@ void printCarsHeader() {
 void printCar(struct Car *car) {
     printf("%d\t%s\t\t%s\t\t%d\t\t%d\t\t%s\n", car->id, car->manufacturer, car->model, car->price, car->kilometrage,
            car->hired ? "Hired" : "Available");
+}
+
+
+
+////////// Misc stuff
+
+/**
+ * Prints the obvious message
+ */
+void printNoValidChoiceMessage() {
+    printf("Please enter a valid choice.");
+}
+
+void printWrongUsernameOrPassword() {
+    printf("Wrong username or password. Please try again. Input x to exit.\n");
+}
+
+void printInvalidId() {
+    printf("Please enter a valid id.\n");
+}
+
+/**
+ * Prints a row with any given column params with two tab spaces in between each.
+ *
+ * Unsupported
+ */
+void printRow(int columnCount, ...) {
+    /*
+     * Was going to write a function that prints a row for just anything. Figured there's no way to tell a vararg type
+     * at runtime in C though. Such letdown.
+     */
 }
 
 #endif //CAR_HIRING_SYSTEM_PRINT_H

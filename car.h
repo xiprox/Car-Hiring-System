@@ -95,14 +95,15 @@ int reloadLastCarsId() {
     return lastCarsId;
 }
 
-
 /**
+ * Adds a new car to the database.
  *
+ * CAUTION! Don't pass 0 for autoGenerateId when you are adding a new car. Use it only when updating an existing car.
  */
-struct Car addCar(struct Car *car) {
+void addCar(struct Car *car, int autoGenerateId) {
     FILE *file = fopen(CARS_STORE, "a");
 
-    fprintf(file, CAR_FORMAT, ++lastCarsId, car->price, car->model, car->manufacturer, car->kilometrage, car->hired);
+    fprintf(file, CAR_FORMAT, autoGenerateId ? ++lastCarsId : car->id, car->price, car->model, car->manufacturer, car->kilometrage, car->hired);
     fclose(file);
 
     /* Make sure to store the now updated last id */
@@ -145,16 +146,17 @@ void removeCar(int id) {
  * Replaces a car ine in the database with a given car struct only retaining the ID. Basically, everything other tha
  * the ID is replaced with th values of the car parameter.
  */
-struct Car updateCar(int id, struct Car *car) {
+struct Car * updateCar(int id, struct Car *car) {
     removeCar(id);
     car->id = id;
-//    addCar(car); TODO: Uncomment when add car is implemented
+    addCar(car, 0);
+    return car;
 }
 
 /**
  * Asks the user for info about a car. We use this function to get values for updating cars. A car struct is passed from
  * the outside for when we want to build up on an already existing car (that has some values). If you want to get input
- * for a new car, just pass a new Car struct.
+ * for a new car, just pass a new Car struct. Beware, ignored fields will be messed up on your resultant struct.
  */
 struct Car *getCarFromUser(struct Car *car) {
     printf("\nPlease input the following filed values. Enter x (or -1 for numeric fields) to retain the current values.\n\n");
@@ -196,6 +198,18 @@ struct Car *getCarFromUser(struct Car *car) {
     }
 
     return car;
+}
+
+/**
+ * Finds and returns a car by its ID. And NULL otherwise
+ */
+struct Car findCarById(int id) {
+    struct Car *cars = getAllCars();
+    for (int i = 0; i < carsCount; i++) {
+        if (cars[i].id == id) return cars[i];
+    }
+    struct Car empty;
+    return empty;
 }
 
 /**
@@ -258,6 +272,10 @@ void hireCar(int id, int carId) {
  */
 void returnCar(int id, int carId) {
     // TODO: Implementation
+}
+
+int validateId(int id) {
+    return id >= 0 && id <= lastCarsId;
 }
 
 #endif //CAR_HIRING_SYSTEM_CAR_H
