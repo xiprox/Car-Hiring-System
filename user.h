@@ -20,11 +20,11 @@ char ID_STORE_USERS[] = "ID_STORE_USERS.txt";
 char USERS_STORE[] = "USERS_STORE.txt";
 char USERS_STORE_COPY[] = "USERS_STORE_COPY.txt";
 
-int lastId = 0;
+int lastUsersId = 0;
 
 int usersCount;
 
-int reloadLastId();
+int reloadLastUsersId();
 
 struct User readUserFromFile(FILE *);
 void writeUserToFile(FILE *file, struct User *user);
@@ -33,14 +33,14 @@ void writeUserToFile(FILE *file, struct User *user);
  * Prepares the user header. Make sure to call this in your main function before anything else!
  */
 void initUserH() {
-    reloadLastId();
+    reloadLastUsersId();
 }
 
 /**
  * ...
  */
-void updateLastId(int id) {
-    lastId = id;
+void updateLastUsersId(int id) {
+    lastUsersId = id;
     FILE *file = fopen(ID_STORE_USERS, "w");
     fprintf(file, ID_FORMAT, id);
     fclose(file);
@@ -49,17 +49,17 @@ void updateLastId(int id) {
 /**
  * ...
  */
-int reloadLastId() {
+int reloadLastUsersId() {
     FILE *file = fopen(ID_STORE_USERS, "r");
 
     if (file == NULL) {
         fopen(ID_STORE_USERS, "w");
-        return lastId;
+        return lastUsersId;
     }
 
-    fscanf(file, ID_FORMAT, &lastId);
+    fscanf(file, ID_FORMAT, &lastUsersId);
     fclose(file);
-    return lastId;
+    return lastUsersId;
 }
 
 /**
@@ -68,11 +68,11 @@ int reloadLastId() {
 void addUser(struct User *user) {
     FILE *users = fopen(USERS_STORE, "a");
 
-    fprintf(users, USER_FORMAT, ++lastId, user->username, user->password, user->name, user->surname, user->type);
+    fprintf(users, USER_FORMAT, ++lastUsersId, user->username, user->password, user->name, user->surname, user->type);
     fclose(users);
 
     /* Make sure to store the now update last id */
-    updateLastId(lastId);
+    updateLastUsersId(lastUsersId);
 }
 
 /**

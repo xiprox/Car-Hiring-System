@@ -11,15 +11,20 @@ char ID_STORE_CARS[] = "ID_STORE_CARS.txt";
 char CARS_STORE[] = "CARS_STORE.txt";
 char CARS_STORE_COPY[] = "CARS_STORE_COPY.txt";
 
+int lastCarsId = 0;
+
 int carsCount;
 
+int reloadLastCarsId();
+
 struct Car readCarFromFile(FILE *);
+
 void writeCarToFile(FILE *, struct Car *);
 
 /**
  *
  */
-struct Car * getAllCars() {
+struct Car *getAllCars() {
     FILE *file = fopen(CARS_STORE, "r");
 
     /* Return empty array if file doesn't even exist */
@@ -57,20 +62,51 @@ void writeCarToFile(FILE *file, struct Car *car) {
 }
 
 /**
+ * Prepares the car header. Make sure to call this in your main function before anything else!
+ */
+void initCarH() {
+    reloadLastCarsId();
+}
+
+/**
+ * ...
+ */
+void updateLastCarsId(int id) {
+    lastCarsId = id;
+    FILE *file = fopen(ID_STORE_CARS, "w");
+    fprintf(file, ID_FORMAT, id);
+    fclose(file);
+}
+
+/**
+ * ...
+ */
+int reloadLastCarsId() {
+    FILE *file = fopen(ID_STORE_CARS, "r");
+
+    if (file == NULL) {
+        fopen(ID_STORE_CARS, "w");
+        return lastCarsId;
+    }
+
+    fscanf(file, ID_FORMAT, &lastCarsId);
+    fclose(file);
+    return lastCarsId;
+}
+
+
+/**
  *
  */
-struct Car addCar(struct Car * car ) {
-    
-   
-    
-        FILE *file = fopen(CARS_STORE, "a");
-        
-        fprintf(file, CAR_FORMAT, ++lastId, car->price, car->model, car->manufacturer, car->kilometrage, car->hired);
-        fclose(file);
-        
-    /* Make sure to store the now update last id  */
-        updateLastId(lastId);
-    }
+struct Car addCar(struct Car *car) {
+    FILE *file = fopen(CARS_STORE, "a");
+
+    fprintf(file, CAR_FORMAT, ++lastCarsId, car->price, car->model, car->manufacturer, car->kilometrage, car->hired);
+    fclose(file);
+
+    /* Make sure to store the now updated last id */
+    updateLastCarsId(lastCarsId);
+}
 
 /**
  *
@@ -119,7 +155,7 @@ struct Car updateCar(int id, struct Car *car) {
  * the outside for when we want to build up on an already existing car (that has some values). If you want to get input
  * for a new car, just pass a new Car struct.
  */
-struct Car * getCarFromUser(struct Car *car) {
+struct Car *getCarFromUser(struct Car *car) {
     printf("\nPlease input the following filed values. Enter x (or -1 for numeric fields) to retain the current values.\n\n");
 
     /* Manufacturer */

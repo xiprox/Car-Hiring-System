@@ -18,6 +18,7 @@ int main() {
 
     /* Initialization of some stuff */
     initUserH();
+    initCarH();
 
     int choice = -1;
 
