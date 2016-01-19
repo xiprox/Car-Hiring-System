@@ -163,7 +163,7 @@ void printCars(struct Car *cars, int count) {
  */
 void printCarsHeader() {
     printf("ID\tManufacturer\t\tModel\t\tPrice\t\tKilometrage\t\tStatus\n");
-    printf("--------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------\n");
 }
 
 /**
