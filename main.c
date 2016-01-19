@@ -267,24 +267,23 @@ void customerMode() {
 }
 
 int promptLogin(int type) {
-    struct User user;
-    user.type = type;
+    currentUser.type = type;
 
     int authenticated = 0;
     while (authenticated == 0) {
         printf("\nUsername: ");
-        scanf("%s", user.username);
+        scanf("%s", currentUser.username);
 
         /* Handle exit option */
-        if (!strcmp(user.username, "x")) {
+        if (!strcmp(currentUser.username, "x")) {
             authenticated = -1;
             continue;
         }
 
         printf("Password: ");
-        scanf("%s", user.password);
+        scanf("%s", currentUser.password);
 
-        authenticated = authenticate(&user, type);
+        authenticated = authenticate(&currentUser, type);
 
         if (!authenticated) {
             printWrongUsernameOrPassword();

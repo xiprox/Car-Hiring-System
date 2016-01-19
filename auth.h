@@ -1,6 +1,9 @@
 #ifndef CAR_HIRING_SYSTEM_AUTH_H
 #define CAR_HIRING_SYSTEM_AUTH_H
 
+
+struct User currentUser;
+
 /**
  * ...
  */
