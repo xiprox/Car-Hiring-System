@@ -12,6 +12,8 @@ void adminMode();
 
 void customerMode();
 
+void searchByAttributes();
+
 int promptLogin(int type);
 
 int main() {
@@ -179,27 +181,7 @@ void adminMode() {
                 removeCar(id);
                 break;
             case 4:
-                printf("Searching cars by attributes. Input x for text, and -1 for numeric inputs to omit them.\n\n");
-                char manufacturer[40], model[20];
-                int price, kilometrage, hired;
-
-                printf("Manufacturer: ");
-                scanf("%s", manufacturer);
-
-                printf("Model: ");
-                scanf("%s", model);
-
-                printf("Price (relative): ");
-                scanf("%d", &price);
-
-                printf("Kilometrage (relative): ");
-                scanf("%d", &kilometrage);
-
-                printf("Hired (1 or 0): ");
-                scanf("%d", &hired);
-
-                printCars(filterCars(getAllCars(), carsCount, manufacturer, model, price, kilometrage, hired),
-                          filteredResultsCount);
+                searchByAttributes();
                 break;
             case 5:
                 printf("Updating a car: \n");
@@ -270,7 +252,7 @@ void customerMode() {
                 printCars(filterCars(getAllCars(), carsCount, "x", "x", -1, -1, 0), filteredResultsCount);
                 break;
             case 5:
-                // TODO
+                searchByAttributes();
                 break;
             case 6: {
                 struct Hire *hires = getHiresByUser(currentUser.id, 0);
@@ -285,6 +267,30 @@ void customerMode() {
                 printNoValidChoiceMessage();
         }
     }
+}
+
+void searchByAttributes() {
+    printf("Searching cars by attributes. Input x for text, and -1 for numeric inputs to omit them.\n\n");
+    char manufacturer[40], model[20];
+    int price, kilometrage, hired;
+
+    printf("Manufacturer: ");
+    scanf("%s", manufacturer);
+
+    printf("Model: ");
+    scanf("%s", model);
+
+    printf("Price (relative): ");
+    scanf("%d", &price);
+
+    printf("Kilometrage (relative): ");
+    scanf("%d", &kilometrage);
+
+    printf("Hired (1 or 0): ");
+    scanf("%d", &hired);
+
+    printCars(filterCars(getAllCars(), carsCount, manufacturer, model, price, kilometrage, hired),
+              filteredResultsCount);
 }
 
 int promptLogin(int type) {
