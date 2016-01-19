@@ -252,10 +252,10 @@ void customerMode() {
                 // TODO
                 break;
             case 3:
-                // TODO
+                printCars(filterCars(getAllCars(), carsCount, "x", "x", -1, -1, 1), filteredResultsCount);
                 break;
             case 4:
-                // TODO
+                printCars(filterCars(getAllCars(), carsCount, "x", "x", -1, -1, 0), filteredResultsCount);
                 break;
             case 5:
                 // TODO
