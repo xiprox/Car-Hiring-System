@@ -3,6 +3,7 @@
 #include "user.h"
 #include "print.h"
 #include "auth.h"
+#include "car.h"
 
 void devMode();
 
@@ -146,8 +147,14 @@ void adminMode() {
             case 0:
                 main();
                 break;
-            case 1:
-                // TODO
+            case 1: {
+                struct Car *cars = getAllCars();
+                if (carsCount != 0) {
+                    printCars(cars, carsCount);
+                } else {
+                    printf("\tNo cars found.\n\n");
+                }
+            }
                 break;
             case 2:
                 // TODO

@@ -59,14 +59,14 @@ void writeCarToFile(FILE *file, struct Car *car) {
 /**
  *
  */
-struct Car addUser(/*...*/) {
+struct Car addCar(/*...*/) {
     // TODO: Implementation
 }
 
 /**
  *
  */
-void removeUser(int id) {
+void removeCar(int id) {
     // TODO: Implementation
 }
 
