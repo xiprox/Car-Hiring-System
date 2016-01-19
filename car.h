@@ -67,7 +67,32 @@ struct Car addCar(/*...*/) {
  *
  */
 void removeCar(int id) {
-    // TODO: Implementation
+    FILE *file = fopen(CARS_STORE, "r");
+    FILE *tempFile = fopen(CARS_STORE_COPY, "w");
+
+    /*
+     * Loop through the first file copying any nonmatching cars (the ones that don't have the id we are removing) to a
+     * temporary file
+     */
+    while (!feof(file)) {
+        struct Car car = readCarFromFile(file);
+
+        if (car.id != id) {
+            writeCarToFile(tempFile, &car);
+        }
+    }
+
+    /* Delete the original file and rename the copy as original. Then proceed to delete the now useless copy */
+    fclose(file);
+    int deleteResult = remove(CARS_STORE);
+    if (deleteResult == 0) {
+        rename(CARS_STORE_COPY, CARS_STORE);
+        remove(CARS_STORE_COPY);
+    } else {
+        printf("\tCouldn't remove car with id %d", id);
+    }
+
+    fclose(tempFile);
 }
 
 /**

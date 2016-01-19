@@ -160,7 +160,11 @@ void adminMode() {
                 // TODO
                 break;
             case 3:
-                // TODO
+                printf("Removing a car: \n");
+                printf("\tWhich car would you like to remove (ID): ");
+                int id;
+                scanf("%d", &id);
+                removeCar(id);
                 break;
             case 4:
                 // TODO
