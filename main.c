@@ -158,7 +158,10 @@ void adminMode() {
             }
                 break;
             case 2:
-                // TODO
+                printf("Adding a new car: \n");
+                struct Car car;
+                getCarFromUser(&car);
+                addCar(&car);
                 break;
             case 3:
                 printf("Removing a car: \n");
