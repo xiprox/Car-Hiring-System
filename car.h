@@ -96,10 +96,60 @@ void removeCar(int id) {
 }
 
 /**
- *
+ * Replaces a car ine in the database with a given car struct only retaining the ID. Basically, everything other tha
+ * the ID is replaced with th values of the car parameter.
  */
-struct Car updateCar(int id/* ... */) {
-    // TODO: Implementation
+struct Car updateCar(int id, struct Car *car) {
+    removeCar(id);
+    car->id = id;
+//    addCar(car); TODO: Uncomment when add car is implemented
+}
+
+/**
+ * Asks the user for info about a car. We use this function to get values for updating cars. A car struct is passed from
+ * the outside for when we want to build up on an already existing car (that has some values). If you want to get input
+ * for a new car, just pass a new Car struct.
+ */
+struct Car * getCarFromUser(struct Car *car) {
+    printf("\nPlease input the following filed values. Enter x (or -1 for numeric fields) to retain the current values.\n\n");
+
+    /* Manufacturer */
+    printf("Manufacturer (Current: %s): ", car->manufacturer);
+    char manufacturer[40];
+    scanf("%s", manufacturer);
+
+    if (strcmp(manufacturer, "x") != 0) {
+        strcpy(car->manufacturer, manufacturer);
+    }
+
+    /* Model */
+    printf("Model (Current: %s): ", car->model);
+    char model[20];
+    scanf("%s", model);
+
+    if (strcmp(model, "x") != 0) {
+        strcpy(car->model, model);
+    }
+
+    /* Price */
+    printf("Price (Current: %d): ", car->price);
+    int price;
+    scanf("%d", &price);
+
+    if (price != -1) {
+        car->price = price;
+    }
+
+    /* Kilometrage */
+    printf("Kilometrage (Current %d): ", car->kilometrage);
+    int kilometrage;
+    scanf("%d", &kilometrage);
+
+    if (kilometrage != -1) {
+        car->kilometrage = kilometrage;
+    }
+
+    return car;
 }
 
 /**

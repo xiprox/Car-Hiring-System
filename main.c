@@ -170,7 +170,13 @@ void adminMode() {
                 // TODO
                 break;
             case 5:
-                // TODO
+                printf("Updating a car: \n");
+                printf("\tWhich car would you like to update (ID): ");
+                int carId;
+                scanf("%d", &carId);
+
+                struct Car updatedCar;
+                updateCar(carId, getCarFromUser(&updatedCar));
                 break;
             default:
                 printNoValidChoiceMessage();
